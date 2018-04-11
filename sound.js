@@ -1,5 +1,8 @@
 var updateParametersInterval;
 var updateTimeInterval;
+var reverb;
+var output = new Tone.Signal();
+
 function start() {
   scheduleWeekdays(metro.lines.green);
   scheduleWeekdays(metro.lines.yellow);
@@ -14,6 +17,8 @@ function start() {
   updateParametersInterval = setInterval(updateParameters, 1000);
   Tone.Transport.on("start", updateParameters);
   updateTimeInterval = setInterval(updateTime, 300);
+  reverb = new Tone.JCReverb(0.4).connect(Tone.Master);
+  output.connect(reverb);
 }
 
 function scheduleWeekdays(line) {
@@ -119,7 +124,8 @@ var notes = {
   ],
   yellow: [
     null,
-    "A5"
+    "A5",
+    "D1"
   ],
   orange: [
     null,
@@ -183,7 +189,7 @@ var fmParameters2 = {
   }
 };
 // TODO: Add a pad preset from somewhere.
-var fmPolySynth = new Tone.PolySynth(4, Tone.FMSynth, fmParameters1).toMaster(); //TODO: larger polyphony?
+var fmPolySynth = new Tone.PolySynth(4, Tone.FMSynth, fmParameters1).connect(output); //TODO: larger polyphony?
 var fatSynth = new Tone.PolySynth(3, Tone.Synth, {
 	"oscillator" : {
 		"type" : "fatsawtooth",
@@ -197,13 +203,14 @@ var fatSynth = new Tone.PolySynth(3, Tone.Synth, {
 		"release": 0.4,
 		"attackCurve" : "exponential"
 	},
-}).toMaster();
+}).connect(output);
 
 var instruments = {
   green: fmPolySynth,
-  yellow: new Tone.PolySynth().toMaster(),
+  //yellow: new Tone.PolySynth().connect(output),
+  yellow: new Tone.PolySynth(4, Tone.AMSynth).connect(output),
   blue: fatSynth,
-  orange: new Tone.MembraneSynth().toMaster()
+  orange: new Tone.MembraneSynth().connect(output)
 }
 /// Return an array with [timeOffset, stationIndex] for line.
 function getStationTimes(line) {
@@ -254,6 +261,8 @@ function updateParameters() {
 
   $("#harmonicity").text("H: " + harmonicity.toFixed(2));
   $("#modulation-index").text("I: " + modulationIndex);
+
+  instruments.yellow.set("harmonicity", getMinute() / 60 * 5);
 }
 
 function updateTime() {
