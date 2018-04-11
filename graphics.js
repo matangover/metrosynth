@@ -73,6 +73,21 @@ function onFrame(event) {
     //var rideProgressTicks = (Tone.Transport.ticks - ride.start.toTicks()) / Tone.TransportTime(minutesToTransportTime(rideLengthMinutes)).toTicks();
     train.trainGraphic.position = train.trackGraphic.getPointAt(rideProgress * train.trackGraphic.length);
   }
+
+  for (var trainRideId in trains) {
+    var found = false;
+    for (var i = 0; i < activeRides.length; i++) {
+      var ride = activeRides[i];
+      if (getRideId(ride.start, ride.line) == trainRideId) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      trains[trainRideId].trainGraphic.remove();
+      delete trains[trainRideId];
+    }
+  }
 }
 
 function getOrAddTrain(ride) {
