@@ -48,6 +48,9 @@ function schedule(line, frequency, start, end) {
   }
 }
 
+schedulingCallbacks = {
+  blue: scheduleBlue
+}
 // A list of rides in the format:
 // {
 //   start: [Tone.TransportTime],
@@ -71,14 +74,33 @@ function scheduleRide(line, rideStart) {
       //console.log("Ride", station);
       var note = notes[line.name][station];
       if (!note) return;
-      //console.log("Triggering note");
-	    //the value is an object which contains both the note and the velocity
-  	  instruments[line.name].triggerAttackRelease(note, "8n", eventTime); // , value.velocity);
+      if (schedulingCallbacks[line.name]) {
+        schedulingCallbacks[line.name](rideStart, note, eventTime);
+      } else {
+        //console.log("Triggering note");
+        //the value is an object which contains both the note and the velocity
+	      instruments[line.name].triggerAttackRelease(note, "8n", eventTime); // , value.velocity);
+      }
     },
     getStationTimes(line)
   ).start(minutesToTransportTime(rideStart));
   //console.log(getStationTimes(line, time));
   parts.push(part);
+}
+
+var pitchShifts = [0, 2, 3, 5, 7];
+function scheduleBlue(rideStart, note, eventTime) {
+  var pitches = note[0];
+  var duration = note[1];
+  // every hour change harmony
+  var hour = Math.floor(rideStart / 60) % 24;
+  hour = hour % 10;
+  var pitchShiftIndex = hour < 5 ? hour : 9-hour;
+  var pitchShift = pitchShifts[pitchShiftIndex];
+  for (var i = 0; i < pitches.length; i++) {
+    var pitch = Tone.Frequency(pitches[i]).transpose(pitchShift);
+    instruments.blue.triggerAttackRelease(pitch, duration, eventTime)
+  }
 }
 
 var parts = [];
@@ -98,7 +120,7 @@ var notes = {
     "A5"
   ],
   orange: [],
-  blue: []
+  blue: [[["A2"], "4n"], null, null, [["G4", "C5","E5"], "2n"], [["F#4", "C5","D5"], "4n"], null, null, null, [["E5", "G5","B5"], "8n"]]
 };
 
 var fmParameters1 = {
@@ -144,9 +166,25 @@ var fmParameters2 = {
 };
 // TODO: Add a pad preset from somewhere.
 var fmPolySynth = new Tone.PolySynth(4, Tone.FMSynth, fmParameters1).toMaster(); //TODO: larger polyphony?
+var fatSynth = new Tone.PolySynth(3, Tone.Synth, {
+	"oscillator" : {
+		"type" : "fatsawtooth",
+		"count" : 3,
+		"spread" : 30
+	},
+	"envelope": {
+		"attack": 0.01,
+		"decay": 0.1,
+		"sustain": 0.5,
+		"release": 0.4,
+		"attackCurve" : "exponential"
+	},
+}).toMaster();
+
 var instruments = {
   green: fmPolySynth,
-  yellow: new Tone.PolySynth().toMaster()
+  yellow: new Tone.PolySynth().toMaster(),
+  blue: fatSynth
 }
 /// Return an array with [timeOffset, stationIndex] for line.
 function getStationTimes(line) {
