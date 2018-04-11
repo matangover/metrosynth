@@ -1,11 +1,4 @@
 function start() {
-  // //create a synth and connect it to the master output (your speakers)
-  // var synth = new Tone.Synth().toMaster();
-  //
-  // //play a middle 'C' for the duration of an 8th note
-  // synth.triggerAttackRelease("C4", "8n");
-  // Tone.Transport.start(2);
-
   scheduleWeekdays(metro.lines.green);
 
   var startOffset = t(metro.lines.green.hours[0].weekdays.first);
@@ -14,6 +7,7 @@ function start() {
 
 function scheduleWeekdays(line) {
   var frequencies = line.frequencies.weekdays;
+  // TODO: all weekdays
   // for (var weekday = 0; weekday < 5; weekday++) {
     var nonPeakStart = t(line.hours[0].weekdays.first);
     for (var peakIndex = 0; peakIndex < metro.peak.length; peakIndex++) {
@@ -34,16 +28,30 @@ function timeOfDayToMinuteOffset(timeOfDay, dayOffset) {
 
 loops = [];
 
+// Schedule repeated rides.
+// Times are given as minute offsets from the beginning of the week.
 function schedule(line, frequency, start, end) {
-  var loop = new Tone.Loop(
-    function (time) {
-      console.log("Starting ride", frequency, start, end);
-      scheduleRide(line, time);
+  var rideStart = start;
+  while (rideStart < end) {
+    scheduleRide(line, rideStart);
+    rideStart += frequency;
+  }
+}
+
+function scheduleRide(line, rideStart) {
+  var part = new Tone.Part(
+    function(eventTime, station) {
+      //console.log("Ride", station);
+      var note = notes.green[station];
+      if (!note) return;
+      //console.log("Triggering note");
+	    //the value is an object which contains both the note and the velocity
+  	  synth.triggerAttackRelease(note, "8n", eventTime); // , value.velocity);
     },
-    minutesToTransportTime(frequency)
-  );
-  loop.start(minutesToTransportTime(start)).stop(minutesToTransportTime(end));
-  loops.push(loop);
+    getStationTimes(line)
+  ).start(minutesToTransportTime(rideStart));
+  //console.log(getStationTimes(line, time));
+  parts.push(part);
 }
 
 var parts = [];
@@ -60,24 +68,8 @@ var notes = {
 var synth = new Tone.PolySynth().toMaster(); //TODO: larger polyphony?
 var rides = [];
 
-function scheduleRide(line, time) {
-  var part = new Tone.Part(
-    function(eventTime, station) {
-      //console.log("Ride", station);
-      var note = notes.green[station];
-      if (!note) return;
-      //console.log("Triggering note");
-	    //the value is an object which contains both the note and the velocity
-  	  synth.triggerAttackRelease(note, "8n", eventTime); // , value.velocity);
-    },
-    getStationTimes(line, time)
-  ).start("+0");
-  //console.log(getStationTimes(line, time));
-  parts.push(part);
-}
-
 /// Return an array with [timeOffset, stationIndex] for line.
-function getStationTimes(line, start) {
+function getStationTimes(line) {
   var times = [];
   //var time = start;
   var time = 0;
