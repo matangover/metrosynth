@@ -24,11 +24,11 @@ function loadSVG() {
       linePaths[i].strokeWidth *= scaleFactor;
     }
 
-    for (var i = 0; i < linePaths.length; i++) {
-      train = new paper.Path.Circle(new paper.Point(100, 70), 10);
-      train.fillColor = 'red';
-      trains.push({name: linePaths[i].name, line: linePaths[i], train: train, location: 0});
-    }
+    // for (var i = 0; i < linePaths.length; i++) {
+    //   train = new paper.Path.Circle(new paper.Point(100, 70), 10);
+    //   train.fillColor = 'red';
+    //   trains.push({name: linePaths[i].name, line: linePaths[i], train: train, location: 0});
+    // }
     loaded = true;
   });
 }
@@ -61,7 +61,7 @@ function onFrame(event) {
     var ride = window.activeRides[i];
     var rideStartSeconds = ride.start.toSeconds();
     var rideLengthMinutes = ride.line.times[ride.line.times.length - 1];
-    var rideLengthSeconds = window.minutesToTransportTime(rideLengthMinutes).toSeconds();
+    var rideLengthSeconds = Tone.TransportTime(minutesToTransportTime(rideLengthMinutes)).toSeconds();
     var rideProgress = (currentTime - rideStartSeconds) / rideLengthSeconds;
     if (rideProgress < 0 || rideProgress > 1) {
       // Ride is not currently active, remove it.
@@ -70,6 +70,7 @@ function onFrame(event) {
       continue;
     }
     var train = getOrAddTrain(ride);
+    //var rideProgressTicks = (Tone.Transport.ticks - ride.start.toTicks()) / Tone.TransportTime(minutesToTransportTime(rideLengthMinutes)).toTicks();
     train.trainGraphic.position = train.trackGraphic.getPointAt(rideProgress * train.trackGraphic.length);
   }
 }

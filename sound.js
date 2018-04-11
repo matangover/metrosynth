@@ -38,9 +38,26 @@ function schedule(line, frequency, start, end) {
   }
 }
 
+// A list of rides in the format:
+// {
+//   start: [Tone.TransportTime],
+//   line: [Line object from metro]
+// }
+// Should be used when transport is re-started to re-initialize active ride.
+var rides = [];
+var activeRides = [];
 function scheduleRide(line, rideStart) {
+  // rides.push([{
+  //   start: new Tone.TransportTime(minutesToTransportTime(rideStart)),
+  //   line: line
+  // });
   var part = new Tone.Part(
     function(eventTime, station) {
+      if (station == 0) {
+        Tone.Draw.schedule(function() {
+          activeRides.push({start: new Tone.TransportTime(minutesToTransportTime(rideStart)), line: line})
+        }, eventTime);
+      }
       //console.log("Ride", station);
       var note = notes.green[station];
       if (!note) return;
@@ -66,7 +83,6 @@ var notes = {
 };
 
 var synth = new Tone.PolySynth().toMaster(); //TODO: larger polyphony?
-var rides = [];
 
 /// Return an array with [timeOffset, stationIndex] for line.
 function getStationTimes(line) {
@@ -87,5 +103,8 @@ function minutesToTransportTime(minutes) {
 
 var t = timeOfDayToMinuteOffset;
 
+function getRideId(start, line) {
+  return line.name + "_" + start;
+}
 
 start();

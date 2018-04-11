@@ -1,6 +1,7 @@
 var metro = {
   lines: {
     green: {
+      name: "green",
       frequencies: {
         weekdays: {
           peak: 4, // 3-4
