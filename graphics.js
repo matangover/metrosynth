@@ -56,6 +56,9 @@ function onFrame(event) {
   //     // Ride is not currently active.
   //     continue;
   //   }
+  // TODO: the animation is not smooth probably because the Transport.ticks
+  // isn't updated frequently enough - it's tied to the Tone.clock frequency,
+  // which is 120 BPM by default.
   var currentTime = Tone.Ticks(Tone.Transport.ticks).toSeconds();
   for (var i = 0; i < window.activeRides.length; i++) {
     var ride = window.activeRides[i];
