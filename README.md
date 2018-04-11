@@ -26,7 +26,7 @@ Audio is synthesized using Tone.js which is based on the Web Audio API. Web Audi
 ### Global
 All outputs are routed to a lowpass filter (implemented as a biquad filter). The filter cutoff frequency gradually becomes lower as the day comes to a close.
 
-The output of the filter is routed to a JCReverb node (Schroeder all-pass reverberator).
+The output of the filter is routed to a [JCReverb](https://tonejs.github.io/docs/r12/JCReverb) node (Schroeder all-pass reverberator).
 ## Graphics
 Paper.js is used for vector graphics constructs. It can do useful computations such as finding a point on a path with a certain offset.
 
