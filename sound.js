@@ -144,7 +144,12 @@ var notes = {
     null,
     null,
     "G2",
-    "C2"
+    "C2",
+    null,
+    null,
+    null,
+    "A3"
+
   ],
   blue: [[["A2"], "4n"], null, null, [["G4", "C5","E5"], "2n"], [["F#4", "C5","D5"], "4n"], null, null, null, [["E5", "G5","B5"], "8n"]]
 };

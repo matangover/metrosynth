@@ -103,16 +103,16 @@ var metro = {
       times: [
         0, // Snowdon
         1,
-        2,
+        3,
         4,
-        5,
         6,
+        7,
         8,
         9,
-        40,
-        42,
-        43,
-        45 // Saint Michel
+        10,
+        12,
+        13,
+        15 // Saint Michel
       ]
     },
     orange: {
@@ -136,39 +136,40 @@ var metro = {
           sunday: {first: "05:30", last: "00:38"}
         }
       ],
-      times: [ // TODO: it's reversed from the actual graphical direction
-        0,  //5:29 AM Montmorency
-        1,//5:31 AMDe la Concorde Station
-        3,//5:33 AMStation Cartier
-        5,//5:35 AMHenri-Bourassa
-        6,//5:36 AMSauvé
-        9,//5:39 AMCrémazie
-        10,//5:40 AMJarry
-        12,//5:42 AMJean-Talon
-        13,//5:43 AMBeaubien
-        14,//5:44 AMRosemont
-        16,//5:46 AMLaurier
-        17,//5:47 AMMont-Royal
-        18,//5:48 AMSherbrooke
-        20,//5:50 AMBerri-UQAM
-        21,//5:51 AMChamp-de-Mars
-        22,//5:52 AMPlace-d'Armes
-        23,//5:53 AMSquare-Victoria–OACI
-        24,//5:54 AMBonaventure
-        25,//5:55 AMLucien L'Allier
-        27,//5:57 AMGeorges-Vanier
-        28,//5:58 AMLionel Groulx
-        29,//5:59 AMPlace Saint-Henri
-        31,//6:01 AMVendôme
-        34,//6:04 AMVilla-Maria
-        35,//6:05 AMSnowdon
-        36,//6:06 AMCote-Ste-Catherine
-        37,//6:07 AMPlamondon
-        39,//6:09 AMNamur
-        40,//6:10 AMSavane
-        42,//6:12 AMDu Collège
-        44//6:14 AM
-      ]
+      // times: [ // TODO: it's reversed from the actual graphical direction
+      //   0,  //5:29 AM Montmorency
+      //   1,//5:31 AMDe la Concorde Station
+      //   3,//5:33 AMStation Cartier
+      //   5,//5:35 AMHenri-Bourassa
+      //   6,//5:36 AMSauvé
+      //   9,//5:39 AMCrémazie
+      //   10,//5:40 AMJarry
+      //   12,//5:42 AMJean-Talon
+      //   13,//5:43 AMBeaubien
+      //   14,//5:44 AMRosemont
+      //   16,//5:46 AMLaurier
+      //   17,//5:47 AMMont-Royal
+      //   18,//5:48 AMSherbrooke
+      //   20,//5:50 AMBerri-UQAM
+      //   21,//5:51 AMChamp-de-Mars
+      //   22,//5:52 AMPlace-d'Armes
+      //   23,//5:53 AMSquare-Victoria–OACI
+      //   24,//5:54 AMBonaventure
+      //   25,//5:55 AMLucien L'Allier
+      //   27,//5:57 AMGeorges-Vanier
+      //   28,//5:58 AMLionel Groulx
+      //   29,//5:59 AMPlace Saint-Henri
+      //   31,//6:01 AMVendôme
+      //   34,//6:04 AMVilla-Maria
+      //   35,//6:05 AMSnowdon
+      //   36,//6:06 AMCote-Ste-Catherine
+      //   37,//6:07 AMPlamondon
+      //   39,//6:09 AMNamur
+      //   40,//6:10 AMSavane
+      //   42,//6:12 AMDu Collège
+      //   44//6:14 AM
+      // ]
+      times: [0, 2, 4, 5, 7, 8, 9, 10, 13, 15, 16, 17, 19, 20, 21, 22, 23, 24, 26, 27, 28, 30, 31, 32, 34, 35, 38, 39, 41, 43, 44]
     }
   },
   peak: [

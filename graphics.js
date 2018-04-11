@@ -163,9 +163,45 @@ var stationOffsets = {
     700,
     730,
     758
-  ]
+  ],
+  orange: [0, 27, 56, 84, 112, 140, 170, 196, 224, 252, 310, 336, 364, 393, 421, 449, 477, 530, 571, 596, 622, 648, 674, 730, 758, 786, 800, 814, 870, 930, 987],
+  yellow: [0, 49, 122],
+  blue: [0, 27, 56, 83, 123, 163, 205, 231, 259, 287, 315, 344]
 };
 
 //l=item.getItem({name:"green-line"})
 //c=new paper.Path.Circle(l.getPointAt(25),10); c.fillColor="red";
 //c.remove()
+function getOffsets(line) {
+  var trackGraphic = item.getItem({name: line+'-line'});
+  var stationsGraphic = item.getItem({name: line+'-stations'});
+  var points = stationsGraphic.children[1].children;
+  var os = [];
+  for (var i = 0; i < points.length; i++) {
+    var nearest = trackGraphic.getNearestPoint(points[i].position);
+    var offset = trackGraphic.getOffsetOf(nearest);
+    var c = new paper.Path.Circle(nearest, 10);
+    c.fillColor = 'yellow';
+    os.push(Math.floor(offset));
+    console.log(offset);
+    //trackGraphic
+  }
+  os.sort(function (a, b) {  return a - b;  });
+  return os;
+}
+function drawOffset(line, offset) {
+  var trackGraphic = item.getItem({name: line+'-line'});
+  var point = trackGraphic.getPointAt(offset);
+  var c = paper.Path.Circle(point, 10);
+  c.fillColor = 'green';
+  return c;
+}
+function drawLine(line) {
+  var trackGraphic = item.getItem({name: line+'-line'});
+  var offsets = stationOffsets[line];
+  for (var i = 0; i < offsets.length; i++) {
+    var point = trackGraphic.getPointAt(offsets[i]);
+    var c = paper.Path.Circle(point, 10);
+    c.fillColor = 'green';
+  }
+}
