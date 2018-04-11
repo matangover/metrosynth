@@ -122,7 +122,18 @@ var notes = {
     null,
     null,
     null,
-    "G4"
+    "G4",
+    null,
+    null,
+    null,
+    "Eb5",
+    "F5",
+    null,
+    "B4",
+    null,
+    null,
+    "D5",
+    "C5"
   ],
   yellow: [
     null,
@@ -196,8 +207,8 @@ var fmParameters2 = {
   }
 };
 // TODO: Add a pad preset from somewhere.
-var fmPolySynth = new Tone.PolySynth(4, Tone.FMSynth, fmParameters1).connect(output); //TODO: larger polyphony?
-var fatSynth = new Tone.PolySynth(3, Tone.Synth, {
+var fmPolySynth = new Tone.PolySynth(16, Tone.FMSynth, fmParameters1).connect(output); //TODO: larger polyphony?
+var fatSynth = new Tone.PolySynth(16, Tone.Synth, {
 	"oscillator" : {
 		"type" : "fatsawtooth",
 		"count" : 3,
@@ -215,7 +226,7 @@ var fatSynth = new Tone.PolySynth(3, Tone.Synth, {
 var instruments = {
   green: fmPolySynth,
   //yellow: new Tone.PolySynth().connect(output),
-  yellow: new Tone.PolySynth(4, Tone.AMSynth).connect(output),
+  yellow: new Tone.PolySynth(16, Tone.AMSynth).connect(output),
   blue: fatSynth,
   orange: new Tone.MembraneSynth().connect(output)
 }
