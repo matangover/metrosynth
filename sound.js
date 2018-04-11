@@ -118,9 +118,26 @@ var notes = {
     "G4"
   ],
   yellow: [
+    null,
     "A5"
   ],
-  orange: [],
+  orange: [
+    null,
+    null,
+    null,
+    "C2",
+    null,
+    "G1",
+    "D2",
+    null,
+    null,
+    null,
+    "F2",
+    null,
+    null,
+    "G2",
+    "C2"
+  ],
   blue: [[["A2"], "4n"], null, null, [["G4", "C5","E5"], "2n"], [["F#4", "C5","D5"], "4n"], null, null, null, [["E5", "G5","B5"], "8n"]]
 };
 
@@ -185,7 +202,8 @@ var fatSynth = new Tone.PolySynth(3, Tone.Synth, {
 var instruments = {
   green: fmPolySynth,
   yellow: new Tone.PolySynth().toMaster(),
-  blue: fatSynth
+  blue: fatSynth,
+  orange: new Tone.MembraneSynth().toMaster()
 }
 /// Return an array with [timeOffset, stationIndex] for line.
 function getStationTimes(line) {
