@@ -74,7 +74,11 @@ function onFrame(event) {
     }
     var train = getOrAddTrain(ride);
     //var rideProgressTicks = (Tone.Transport.ticks - ride.start.toTicks()) / Tone.TransportTime(minutesToTransportTime(rideLengthMinutes)).toTicks();
-    var trainOffset = getTrainOffset(currentTime - rideStartSeconds, ride.line, train.trackGraphic);
+    if (stationOffsets[ride.line.name]) {
+      var trainOffset = getTrainOffset(currentTime - rideStartSeconds, ride.line, train.trackGraphic);
+    } else {
+      var trainOffset = rideProgress * train.trackGraphic.length;
+    }
     train.trainGraphic.position = train.trackGraphic.getPointAt(trainOffset);
   }
 

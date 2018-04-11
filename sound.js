@@ -2,10 +2,11 @@ var updateParametersInterval;
 var updateTimeInterval;
 function start() {
   scheduleWeekdays(metro.lines.green);
+  scheduleWeekdays(metro.lines.yellow);
 
   var startOffset = t(metro.lines.green.hours[0].weekdays.first);
   // Give some time before the start.
-  startOffset -= 15;
+//  startOffset -= 15;
   Tone.Transport.start(Tone.now(), minutesToTransportTime(startOffset));
   updateParametersInterval = setInterval(updateParameters, 1000);
   Tone.Transport.on("start", updateParameters);
@@ -94,7 +95,30 @@ var notes = {
 };
 
 var fmParameters1 = {
-  // Tone.js default sounds nice too.
+  // Tone.js default are nice:
+  // Tone.FMSynth.defaults = {
+	// 	"harmonicity" : 3,
+	// 	"modulationIndex" : 10,
+	// 	"detune" : 0,
+	// 	"oscillator" : {
+	// 		"type" : "sine"
+	// 	},
+	// 	"envelope" : {
+	// 		"attack" : 0.01,
+	// 		"decay" : 0.01,
+	// 		"sustain" : 1,
+	// 		"release" : 0.5
+	// 	},
+	// 	"modulation" : {
+	// 		"type" : "square"
+	// 	},
+	// 	"modulationEnvelope" : {
+	// 		"attack" : 0.5,
+	// 		"decay" : 0.0,
+	// 		"sustain" : 1,
+	// 		"release" : 0.5
+	// 	}
+	// };
 };
 var fmParameters2 = {
   // From fmSynth.html example.

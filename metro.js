@@ -51,6 +51,33 @@ var metro = {
         35 // Honoré-Beaugrand: 6:05 -- assumed
       ],
       directions: ["Honoré-Beaugrand", "Angrignon"]
+    },
+    yellow: {
+      name: "yellow",
+      frequencies: {
+        weekdays: {
+          peak: 4, // 3-5
+          nonpeak: 8 // 5-10
+        },
+        weekend: 8 // 5-10
+      },
+      hours: [
+        {
+          weekdays: {first: "05:30", last: "00:35"},
+          saturday: {first: "05:30", last: "01:05"},
+          sunday: {first: "05:30", last: "00:35"}
+        },
+        {
+          weekdays: {first: "05:30", last: "00:38"},
+          saturday: {first: "05:30", last: "01:08"},
+          sunday: {first: "05:30", last: "00:38"}
+        }
+      ],
+      times: [
+        0, // Longueuil
+        3, // Jean Drapeau
+        15 // Berri UQAM
+      ]
     }
   },
   peak: [
