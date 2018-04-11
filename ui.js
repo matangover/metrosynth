@@ -33,7 +33,11 @@ $(function() {
 
   $("#time").click(function() {
     var newTime = prompt("Set time:");
-    Tone.Transport.position = minutesToTransportTime(timeOfDayToMinuteOffset(newTime));
+    try {
+      Tone.Transport.position = minutesToTransportTime(timeOfDayToMinuteOffset(newTime));
+    } catch(error) {
+      // Wrong format.
+    }
   });
 
   var speedSlider = new Nexus.Dial('#speed-slider', {

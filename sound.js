@@ -1,6 +1,7 @@
 var updateParametersInterval;
 var updateTimeInterval;
 var reverb;
+var filter;
 var output = new Tone.Signal();
 
 function start() {
@@ -18,7 +19,8 @@ function start() {
   Tone.Transport.on("start", updateParameters);
   updateTimeInterval = setInterval(updateTime, 300);
   reverb = new Tone.JCReverb(0.4).connect(Tone.Master);
-  output.connect(reverb);
+  filter = new Tone.Filter().connect(reverb);
+  output.connect(filter);
 }
 
 function scheduleWeekdays(line) {
@@ -32,7 +34,7 @@ function scheduleWeekdays(line) {
       schedule(line, frequencies.peak, t(peak.start), t(peak.end) - 1);
       nonPeakStart = t(peak.end);
     }
-    schedule(line, nonPeakStart, frequencies.nonpeak, t(line.hours[0].weekdays.last, 1));
+    schedule(line, frequencies.nonpeak, nonPeakStart, t(line.hours[0].weekdays.last, 1));
   // }
 }
 
@@ -263,6 +265,15 @@ function updateParameters() {
   $("#modulation-index").text("I: " + modulationIndex);
 
   instruments.yellow.set("harmonicity", getMinute() / 60 * 5);
+
+  var minuteOffset = getMinuteOffsetInDay();
+  // 2:00 AM should still be 'end of the day'.
+  minuteOffset -= 3*60;
+  if (minuteOffset < 0) {
+    minuteOffset += 24*60;
+  }
+  var minutesPerDay = 24*60;
+  filter.frequency.value = 10000 - 9950 *(minuteOffset / minutesPerDay);
 }
 
 function updateTime() {
