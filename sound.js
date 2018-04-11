@@ -1,8 +1,15 @@
+var updateParametersInterval;
+var updateTimeInterval;
 function start() {
   scheduleWeekdays(metro.lines.green);
 
   var startOffset = t(metro.lines.green.hours[0].weekdays.first);
+  // Give some time before the start.
+  startOffset -= 15;
   Tone.Transport.start(Tone.now(), minutesToTransportTime(startOffset));
+  updateParametersInterval = setInterval(updateParameters, 1000);
+  Tone.Transport.on("start", updateParameters);
+  updateTimeInterval = setInterval(updateTime, 300);
 }
 
 function scheduleWeekdays(line) {
@@ -135,3 +142,63 @@ function getRideId(start, line) {
 }
 
 start();
+
+function updateParameters() {
+  var harmonicity = getHour();
+  if (harmonicity < 12) {
+    harmonicity = harmonicity / 2;
+  } else {
+    harmonicity = (24 - harmonicity) / 2;
+  }
+  if (isPeak()) {
+    // TODO: maybe make it gradually more detuned when closer to peak of peak
+    harmonicity *= 1.1;
+  }
+  synth.set("harmonicity", harmonicity);
+  var minute = getMinute();
+  minute = minute < 30 ? minute : 60 - minute;
+  // Ranges between 0-450 (highest in the middle of an hour.)
+  var modulationIndex = minute * 15;
+  synth.set("modulationIndex", modulationIndex);
+
+  $("#harmonicity").text(harmonicity);
+  $("#modulation-index").text(modulationIndex);
+}
+
+function updateTime() {
+  $("#time").text(getTimeOfDay());
+  $("#peak").text(isPeak() ? "Peak" : "Non-peak");
+}
+
+function getMinuteOffsetInDay() {
+  return getMinuteOffset() % (24*60);
+}
+
+function getHour() {
+  return Math.floor(getMinuteOffsetInDay() / 60);
+}
+function getMinute() {
+  return getMinuteOffsetInDay() % 60;
+}
+
+function isPeak() {
+  var hour = getHour();
+  return (hour >= 7 && hour < 9) || (hour >= 16 && hour < 18);
+}
+
+// Minute offset since beginning of time (int).
+function getMinuteOffset() {
+  var quarterTime = Tone.Transport.PPQ; // One quarter in ticks.
+  var quarters = Tone.Transport.ticks / quarterTime;
+  // In our simulation, each quarter note is a 'minute'.
+  return Math.floor(quarters);
+}
+
+function getTimeOfDay() {
+  return getHour() + ":" + getMinute();
+}
+
+function goToTime(hour, minute, dayOfWeek) {
+  if (!dayOfWeek) dayOfWeek = 0;
+  Tone.Transport.position = minutesToTransportTime(dayOfWeek*24*60 + hour*60 + minute);
+}
