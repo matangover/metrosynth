@@ -28,7 +28,6 @@ var metro = {
         4, //Verdun: 5:34
         5, //De L'Église: 5:35
         7, //LaSalle: 5:37
-        7, //LaSalle: 5:37
         8, //Charlevoix: 5:38
         10, // Lionel Groulx: 5:40
         12, // Atwater: 5:42
