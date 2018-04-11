@@ -67,11 +67,11 @@ function scheduleRide(line, rideStart) {
         }, eventTime);
       }
       //console.log("Ride", station);
-      var note = notes.green[station];
+      var note = notes[line.name][station];
       if (!note) return;
       //console.log("Triggering note");
 	    //the value is an object which contains both the note and the velocity
-  	  synth.triggerAttackRelease(note, "8n", eventTime); // , value.velocity);
+  	  instruments[line.name].triggerAttackRelease(note, "8n", eventTime); // , value.velocity);
     },
     getStationTimes(line)
   ).start(minutesToTransportTime(rideStart));
@@ -91,6 +91,9 @@ var notes = {
     null,
     null,
     "G4"
+  ],
+  yellow: [
+    "A5"
   ]
 };
 
@@ -136,8 +139,11 @@ var fmParameters2 = {
   }
 };
 // TODO: Add a pad preset from somewhere.
-var synth = new Tone.PolySynth(4, Tone.FMSynth, fmParameters1).toMaster(); //TODO: larger polyphony?
-
+var fmPolySynth = new Tone.PolySynth(4, Tone.FMSynth, fmParameters1).toMaster(); //TODO: larger polyphony?
+var instruments = {
+  green: fmPolySynth,
+  yellow: new Tone.PolySynth().toMaster()
+}
 /// Return an array with [timeOffset, stationIndex] for line.
 function getStationTimes(line) {
   var times = [];
@@ -178,12 +184,12 @@ function updateParameters() {
     // TODO: maybe make it gradually more detuned when closer to peak of peak
     harmonicity *= 1.1;
   }
-  synth.set("harmonicity", harmonicity);
+  instruments.green.set("harmonicity", harmonicity);
   var minute = getMinute();
   minute = minute < 30 ? minute : 60 - minute;
   // Ranges between 0-450 (highest in the middle of an hour.)
-  var modulationIndex = minute * 15;
-  synth.set("modulationIndex", modulationIndex);
+  var modulationIndex = minute * 15 * getHour() / 24;
+  instruments.green.set("modulationIndex", modulationIndex);
 
   $("#harmonicity").text(harmonicity);
   $("#modulation-index").text(modulationIndex);
