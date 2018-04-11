@@ -8,8 +8,9 @@ function start() {
 
   var startOffset = t(metro.lines.green.hours[0].weekdays.first);
   // Give some time before the start.
-//  startOffset -= 15;
-  Tone.Transport.start(Tone.now(), minutesToTransportTime(startOffset));
+  startOffset -= 10;
+  //Tone.Transport.start(Tone.now(), minutesToTransportTime(startOffset));
+  Tone.Transport.position = minutesToTransportTime(startOffset);
   updateParametersInterval = setInterval(updateParameters, 1000);
   Tone.Transport.on("start", updateParameters);
   updateTimeInterval = setInterval(updateTime, 300);
@@ -233,7 +234,7 @@ function updateParameters() {
   var modulationIndex = minute * 15 * getHour() / 24;
   instruments.green.set("modulationIndex", modulationIndex);
 
-  $("#harmonicity").text(harmonicity);
+  $("#harmonicity").text(harmonicity.toFixed(2));
   $("#modulation-index").text(modulationIndex);
 }
 
@@ -267,7 +268,7 @@ function getMinuteOffset() {
 }
 
 function getTimeOfDay() {
-  return getHour() + ":" + getMinute();
+  return getHour().toString().padStart(2, "0") + ":" + getMinute().toString().padStart(2, "0");
 }
 
 function goToTime(hour, minute, dayOfWeek) {
