@@ -75,10 +75,14 @@ var parts = [];
 var notes = {
   green: [
     "C4",
+    "D4",
+    "E4",
+    null,
+    "F4",
     null,
     null,
     null,
-    //"E4"
+    "G4"
   ]
 };
 
@@ -88,9 +92,9 @@ var synth = new Tone.PolySynth().toMaster(); //TODO: larger polyphony?
 function getStationTimes(line) {
   var times = [];
   //var time = start;
-  var time = 0;
+  //var time = 0;
   for (var i = 0; i < line.times.length; i++) {
-    time += new Tone.TransportTime(minutesToTransportTime(line.times[i])).toSeconds();
+    var time = new Tone.TransportTime(minutesToTransportTime(line.times[i])).toSeconds();
     times.push([time, i]);
   }
   return times;
