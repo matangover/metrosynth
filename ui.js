@@ -35,7 +35,19 @@ $(function() {
     var newTime = prompt("Set time:");
     Tone.Transport.position = minutesToTransportTime(timeOfDayToMinuteOffset(newTime));
   });
-})
+
+  var speedSlider = new Nexus.Dial('#speed-slider', {
+    'min': 20,
+    'max': 500,
+    'step': 1,
+    value: 120
+  })
+  var speedNumber = new Nexus.Number('#speed-number')
+  speedNumber.link(speedSlider)
+  speedSlider.on('change',function(v) {
+    Tone.Transport.bpm.value = Math.round(v);
+  });
+});
 
 function createToggle(line) {
   var toggle = new Nexus.Toggle('#' + line + '-mute', {state: true});

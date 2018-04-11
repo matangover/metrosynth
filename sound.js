@@ -234,8 +234,8 @@ function updateParameters() {
   var modulationIndex = minute * 15 * getHour() / 24;
   instruments.green.set("modulationIndex", modulationIndex);
 
-  $("#harmonicity").text(harmonicity.toFixed(2));
-  $("#modulation-index").text(modulationIndex);
+  $("#harmonicity").text("H: " + harmonicity.toFixed(2));
+  $("#modulation-index").text("I: " + modulationIndex);
 }
 
 function updateTime() {
