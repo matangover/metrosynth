@@ -3,6 +3,8 @@ var updateTimeInterval;
 function start() {
   scheduleWeekdays(metro.lines.green);
   scheduleWeekdays(metro.lines.yellow);
+  scheduleWeekdays(metro.lines.orange);
+  scheduleWeekdays(metro.lines.blue);
 
   var startOffset = t(metro.lines.green.hours[0].weekdays.first);
   // Give some time before the start.
@@ -94,7 +96,9 @@ var notes = {
   ],
   yellow: [
     "A5"
-  ]
+  ],
+  orange: [],
+  blue: []
 };
 
 var fmParameters1 = {
