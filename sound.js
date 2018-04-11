@@ -86,7 +86,26 @@ var notes = {
   ]
 };
 
-var synth = new Tone.PolySynth().toMaster(); //TODO: larger polyphony?
+var fmParameters1 = {
+  // Tone.js default sounds nice too.
+};
+var fmParameters2 = {
+  // From fmSynth.html example.
+  "modulationIndex" : 12.22,
+  "envelope" : {
+    "attack" : 0.01,
+    "decay" : 0.2
+  },
+  "modulation" : {
+    "type" : "square"
+  },
+  "modulationEnvelope" : {
+    "attack" : 0.2,
+    "decay" : 0.01
+  }
+};
+// TODO: Add a pad preset from somewhere.
+var synth = new Tone.PolySynth(4, Tone.FMSynth, fmParameters1).toMaster(); //TODO: larger polyphony?
 
 /// Return an array with [timeOffset, stationIndex] for line.
 function getStationTimes(line) {
