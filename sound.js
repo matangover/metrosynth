@@ -105,6 +105,10 @@ function minutesToTransportTime(minutes) {
   return "0:" + minutes + ":0";
 }
 
+function minutesToSeconds(minutes) {
+  return Tone.TransportTime(minutesToTransportTime(minutes)).toSeconds();
+}
+
 var t = timeOfDayToMinuteOffset;
 
 function getRideId(start, line) {

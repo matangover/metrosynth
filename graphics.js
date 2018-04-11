@@ -74,7 +74,8 @@ function onFrame(event) {
     }
     var train = getOrAddTrain(ride);
     //var rideProgressTicks = (Tone.Transport.ticks - ride.start.toTicks()) / Tone.TransportTime(minutesToTransportTime(rideLengthMinutes)).toTicks();
-    train.trainGraphic.position = train.trackGraphic.getPointAt(rideProgress * train.trackGraphic.length);
+    var trainOffset = getTrainOffset(currentTime - rideStartSeconds, ride.line, train.trackGraphic);
+    train.trainGraphic.position = train.trackGraphic.getPointAt(trainOffset);
   }
 
   for (var trainRideId in trains) {
@@ -101,9 +102,66 @@ function getOrAddTrain(ride) {
     trainGraphic.fillColor = 'red';
     train = {
       trainGraphic: trainGraphic,
-      trackGraphic: window.item.getItem({name: ride.line.name + "-line"})
+      trackGraphic: window.item.getItem({name: ride.line.name + "-line"}),
+      stationsGraphic: window.item.getItem({name: ride.line.name + "-stations"})
     };
     trains[rideId] = train;
   }
   return train;
 }
+//
+// // Return a number from 0-1 how far we are into the ride, taking into account
+// // the ride time between each station.
+function getTrainOffset(currentRideDurationSeconds, line) {
+  var offsets = stationOffsets[line.name];
+  var totalRideDuration = minutesToSeconds(line.times[line.times.length - 1]);
+  for (var i = 1; i < line.times.length; i++) {
+    var rideDurationUntilStation = minutesToSeconds(line.times[i]);
+    if (currentRideDurationSeconds <= rideDurationUntilStation) {
+      var rideDurationUntilPreviousStation = minutesToSeconds(line.times[i-1]);
+      var previousOffset = offsets[i - 1];
+      var progressBetweenStations = (currentRideDurationSeconds-rideDurationUntilPreviousStation)/ (rideDurationUntilStation-rideDurationUntilPreviousStation);
+      var offsetBetweenStations = offsets[i] - previousOffset;
+      return previousOffset + progressBetweenStations*offsetBetweenStations;
+    }
+  }
+  // Last station reached.
+  return 1;
+}
+
+
+var stationOffsets = {
+  green: [
+    0,
+    25,
+    55,
+    81,
+    110,
+    140,
+    170,
+    200,
+    250,
+    280,
+    310,
+    335,
+    370,
+    395,
+    420,
+    455,
+    480,
+    505,
+    535,
+    560,
+    590,
+    620,
+    645,
+    675,
+    700,
+    730,
+    758
+  ]
+};
+
+//l=item.getItem({name:"green-line"})
+//c=new paper.Path.Circle(l.getPointAt(25),10); c.fillColor="red";
+//c.remove()
