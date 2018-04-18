@@ -50,7 +50,7 @@ To ensure a high rendering frame-rate, the graphics loop (Paper.js `onFrame`, ca
 
 In order to realistically display the movement of trains along the tracks, each station's offset along its track was determined. (This had to be done half-manually because the stations are not part of the same path in the SVG.) When displaying the train graphics, the graphics code takes into account the duration of travel between each station to dynamically alter the speed of the train between each pair of stations. The metro map is not drawn to scale so the speed changes considerably among pairs of stations.
 
-Audio controls, including the spectrum display, are implemented using the [NexusUI](https://nexus-js.github.io/ui/api/) library.
+Audio controls ([ui.js](/ui.js)), including the spectrum display, are implemented using the [NexusUI](https://nexus-js.github.io/ui/api/) library.
 
 ## Code manipulations
 In addition to manipulating the user interface, you can execute the following commands in the console to dynamically alter the sonification.
