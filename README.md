@@ -30,8 +30,8 @@ The simulation timeline is based on the Tone.js [`Transport`](https://github.com
 Each metro line is modeled as a separate audio track. Each track has its own 'instrument', that is, synthesis method, on which the line's musical events are played.
 
 - Green line: [FMSynth](https://tonejs.github.io/docs/r12/FMSynth) with the default parameters. Made polyphonic using [PolySynth](https://tonejs.github.io/docs/r12/PolySynth).
- - Harmonicity varies according to the current hour in range 0-6 in multiples of 0.5. It is further multiplied by 1.1 in during peak hours.
- - Modulation index varies according to the current minute in range 0-450.
+  - Harmonicity varies according to the current hour in range 0-6 in multiples of 0.5. It is further multiplied by 1.1 in during peak hours.
+  - Modulation index varies according to the current minute in range 0-450.
 - Yellow line: [AMSynth](https://tonejs.github.io/docs/r12/AMSynth) with the default parameters. Made polyphonic using [PolySynth](https://tonejs.github.io/docs/r12/PolySynth).
   - Harmonicity varies continuously according to the current minute in the range 0-5.
 - Blue line: a "Fat Synth" - three oscillators that are slightly detuned from each other and added together, with an amplitude envelope. Additionally, pitches are transposed by a varying amount of semitones (up to a fifth) according to the current hour.
