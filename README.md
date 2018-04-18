@@ -17,12 +17,12 @@ The user interface consists of a metro map and on top of it red circles represen
 - A graphical display of the audio spectrum.
 
 ## Schedules
-Metro schedules, defined in `metro.js`, were taken from the official STM website. Metro schedules are approximate, since STM doesn't provide exact departure times from each station. Instead, it provides a departure frequency from the origin station and the duration it takes to travel between stations.
+Metro schedules, defined in [`metro.js`](/metro.js), were taken from the official STM website. Metro schedules are approximate, since STM doesn't provide exact departure times from each station. Instead, it provides a departure frequency from the origin station and the duration it takes to travel between stations.
 
 Currently, only one day of events is simulated, according to a weekday schedule. All the necessary infrastructure and data needed to simulate a whole week, including weekend schedules, are already in place.
 
 ## Audio
-The audio generation is based on the Tone.js library, which is itself based on the Web Audio API. Web Audio provides efficient audio building blocks that are accessible through JavaScript but still have real-time performance because the audio processing is independent from the JavaScript event loop. Tone.js provides a large set of tools on top of Web Audio for sound synthesis, effects, and sequencing.
+The audio generation ([sound.js](/sound.js)) is based on the [Tone.js](https://tonejs.github.io) library, which is itself based on the [Web Audio](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) API. Web Audio provides efficient audio building blocks that are accessible through JavaScript but still have real-time performance because the audio processing is independent from the JavaScript event loop. Tone.js provides a large set of tools on top of Web Audio for sound synthesis, effects, and sequencing.
 
 The simulation timeline is based on the Tone.js [`Transport`](https://github.com/Tonejs/Tone.js/wiki/TransportTime). Train arrivals at stations are scheduled as musical events on the transport, so that any change to the global transport speed or position affects any event's playback.
 
@@ -44,7 +44,7 @@ The output of the lowpass filter is routed to a [JCReverb](https://tonejs.github
 
 ## Graphics
 
-All of the graphics are implemented using the Paper.js vector graphics library. The metro map is a vector graphic obtained by converting the offical STM PDF metro map into an SVG file. The SVG file is loaded and converted into Paper.js objects. Every line's geometric path object, labelled manually in the SVG file beforehand, is then obtained from the Paper.js object tree, and train objects can be drawn on it by computing an offset position along the path.
+The graphics rendering ([graphics.js](/graphics.js)) is implemented using the [Paper.js](http://paperjs.org/) vector graphics library. The metro map is a vector graphic obtained by converting the offical STM PDF metro map into an SVG file. The SVG file is loaded and converted into Paper.js objects. Every line's geometric path object, labelled manually in the SVG file beforehand, is then obtained from the Paper.js object tree. Train objects are drawn on top of the tracks by computing an offset position along the path.
 
 To ensure a high rendering frame-rate, the graphics loop (Paper.js `onFrame`, called from a `requestAnimationFrame` browser callback) is separated from the audio loop (Tone.js `Transport` event callbacks). An in-memory data structure of active trains is kept to coordinate between the audio and the graphics simulation.
 
