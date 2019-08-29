@@ -18,6 +18,7 @@ $(function() {
 
   button.on('change',function(v) {
     if (v) {
+      Tone.context.resume();
       Tone.Transport.start();
     } else {
       Tone.Transport.pause();
